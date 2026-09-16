@@ -17,6 +17,14 @@
       justify-content: center;
     }
 
+    .main-container {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
     h1 {
       text-align: center;
       color: #2c3e50;
@@ -27,6 +35,18 @@
       margin-top: 0;
       border-bottom: 2px solid #e2e8f0;
       padding-bottom: 8px;
+    }
+    h3 {
+      color: #2c3e50;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     textarea {
@@ -69,6 +89,10 @@
     th {
       background-color: #f8fafc;
     }
+    .metric-val {
+      font-weight: bold;
+      color: #2c3e50;
+    }
   </style>
 </head>
 <body>
@@ -101,7 +125,7 @@
       </table>
     </div>
 
-    <h2>Сводная таблица 6 базовых метрик</h2>
+    <h2>Сводные базовые метрики</h2>
     <table>
       <thead>
       <tr><th>№</th><th>Базовая метрика</th><th>Обозначение</th><th>Значение</th></tr>
@@ -111,17 +135,20 @@
       <tr><td>2</td><td>Словарь операндов (число уникальных операндов)</td><td>η2</td><td id="m_eta2" class="metric-val">0</td></tr>
       <tr><td>3</td><td>Общее число операторов в программе</td><td>N1</td><td id="m_N1" class="metric-val">0</td></tr>
       <tr><td>4</td><td>Общее число операндов в программе</td><td>N2</td><td id="m_N2" class="metric-val">0</td></tr>
-      <tr><td>5</td><td>Число вхождений j-го оператора</td><td>f1j</td><td id="m_f1j" class="metric-val">0</td></tr>
-      <tr><td>6</td><td>Число вхождений i-го операнда</td><td>f2i</td><td id="m_f2i" class="metric-val">0</td></tr>
       </tbody>
     </table>
 
-    <div class="extended-metrics">
-      <h2>3 Расширенные метрики Холстеда</h2>
-      <p><strong>1. Словарь программы (η = η1 + η2):</strong> <span id="m_eta" class="metric-val">0</span></p>
-      <p><strong>2. Длина программы (N = N1 + N2):</strong> <span id="m_N" class="metric-val">0</span></p>
-      <p><strong>3. Объем программы (V = N * log2(η)):</strong> <span id="m_V" class="metric-val">0</span> бит</p>
-    </div>
+    <h2>3 Расширенные метрики Холстеда</h2>
+    <table>
+      <thead>
+      <tr><th>№</th><th>Расширенная метрика</th><th>Формула</th><th>Обозначение</th><th>Значение</th></tr>
+      </thead>
+      <tbody>
+      <tr><td>1</td><td>Словарь программы</td><td>η1 + η2</td><td>η</td><td id="m_eta" class="metric-val">0</td></tr>
+      <tr><td>2</td><td>Длина программы</td><td>N1 + N2</td><td>N</td><td id="m_N" class="metric-val">0</td></tr>
+      <tr><td>3</td><td>Объем программы</td><td>N * log2(η)</td><td>V</td><td><span id="m_V" class="metric-val">0</span></td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -215,8 +242,6 @@
     document.getElementById("m_eta2").innerText = eta2;
     document.getElementById("m_N1").innerText = N1;
     document.getElementById("m_N2").innerText = N2;
-    document.getElementById("m_f1j").innerText = eta1;
-    document.getElementById("m_f2i").innerText = eta2;
 
     let eta = eta1 + eta2;
     let N = N1 + N2;
