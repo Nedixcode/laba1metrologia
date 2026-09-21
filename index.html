@@ -1,279 +1,269 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Парсер метрик Холстеда для Kotlin</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 40px 20px;
-      background-color: #f4f7f6;
-      color: #333;
-      display: flex;
-      justify-content: center;
-    }
+    <meta charset="UTF-8">
+    <title>Парсер метрик Холстеда для Kotlin</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+        }
 
-    .main-container {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-    }
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
 
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-top: 0;
-    }
-    h2 {
-      color: #2c3e50;
-      margin-top: 0;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 8px;
-    }
-    h3 {
-      color: #2c3e50;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
-    .card {
-      background: #fff;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
+        .card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
 
-    textarea {
-      width: 100%;
-      height: 380px;
-      font-family: Consolas, monospace;
-      font-size: 13px;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      resize: vertical;
-    }
-    button {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 15px;
-      font-weight: bold;
-      width: 100%;
-      transition: background-color 0.2s;
-    }
-    button:hover {
-      background-color: #2980b9;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      margin-bottom: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px 14px;
-      text-align: left;
-    }
-    th {
-      background-color: #f8fafc;
-    }
-    .metric-val {
-      font-weight: bold;
-      color: #2c3e50;
-    }
-  </style>
+        textarea {
+            width: 100%;
+            height: 380px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 14px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8fafc;
+        }
+        .metric-val {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
 </head>
 <body>
 
 <div class="main-container">
-  <h1>Парсер метрик Холстеда (Язык анализа: Kotlin)</h1>
+    <h1>Парсер метрик Холстеда (Язык анализа: Kotlin)</h1>
 
-  <div class="card">
-    <h2>Исходный код Kotlin</h2>
-    <textarea id="codeArea" placeholder="Вставьте код на Kotlin сюда..."></textarea>
-    <button onclick="analyzeCode()">Рассчитать метрики</button>
-  </div>
-
-  <div class="card">
-    <h2>Таблицы частот (f1j и f2i)</h2>
-
-    <div class="table-container">
-      <h3>1. Операторы (f1j)</h3>
-      <table id="operatorsTable">
-        <thead><tr><th>j</th><th>Оператор</th><th>f1j</th></tr></thead>
-        <tbody></tbody>
-      </table>
+    <div class="card">
+        <h2>Исходный код Kotlin</h2>
+        <textarea id="codeArea" placeholder="Вставьте код на Kotlin сюда..."></textarea>
+        <button onclick="analyzeCode()">Рассчитать метрики</button>
     </div>
 
-    <div class="table-container">
-      <h3>2. Операнды (f2i)</h3>
-      <table id="operandsTable">
-        <thead><tr><th>i</th><th>Операнд</th><th>f2i</th></tr></thead>
-        <tbody></tbody>
-      </table>
+    <div class="card">
+        <h2>Таблицы частот (f1j и f2i)</h2>
+
+        <div class="table-container">
+            <h3>1. Операторы (f1j)</h3>
+            <table id="operatorsTable">
+                <thead><tr><th>j</th><th>Оператор</th><th>f1j</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <h3>2. Операнды (f2i)</h3>
+            <table id="operandsTable">
+                <thead><tr><th>i</th><th>Операнд</th><th>f2i</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <h2>Сводные базовые метрики</h2>
+        <table>
+            <thead>
+            <tr><th>№</th><th>Базовая метрика</th><th>Обозначение</th><th>Значение</th></tr>
+            </thead>
+            <tbody>
+            <tr><td>1</td><td>Словарь операторов (число уникальных операторов)</td><td>η1</td><td id="m_eta1" class="metric-val">0</td></tr>
+            <tr><td>2</td><td>Словарь операндов (число уникальных операндов)</td><td>η2</td><td id="m_eta2" class="metric-val">0</td></tr>
+            <tr><td>3</td><td>Общее число операторов в программе</td><td>N1</td><td id="m_N1" class="metric-val">0</td></tr>
+            <tr><td>4</td><td>Общее число операндов в программе</td><td>N2</td><td id="m_N2" class="metric-val">0</td></tr>
+            </tbody>
+        </table>
+
+        <h2>3 Расширенные метрики Холстеда</h2>
+        <table>
+            <thead>
+            <tr><th>№</th><th>Расширенная метрика</th><th>Формула</th><th>Обозначение</th><th>Значение</th></tr>
+            </thead>
+            <tbody>
+            <tr><td>1</td><td>Словарь программы</td><td>η1 + η2</td><td>η</td><td id="m_eta" class="metric-val">0</td></tr>
+            <tr><td>2</td><td>Длина программы</td><td>N1 + N2</td><td>N</td><td id="m_N" class="metric-val">0</td></tr>
+            <tr><td>3</td><td>Объем программы</td><td>N * log2(η)</td><td>V</td><td><span id="m_V" class="metric-val">0</span></td></tr>
+            </tbody>
+        </table>
     </div>
-
-    <h2>Сводные базовые метрики</h2>
-    <table>
-      <thead>
-      <tr><th>№</th><th>Базовая метрика</th><th>Обозначение</th><th>Значение</th></tr>
-      </thead>
-      <tbody>
-      <tr><td>1</td><td>Словарь операторов (число уникальных операторов)</td><td>η1</td><td id="m_eta1" class="metric-val">0</td></tr>
-      <tr><td>2</td><td>Словарь операндов (число уникальных операндов)</td><td>η2</td><td id="m_eta2" class="metric-val">0</td></tr>
-      <tr><td>3</td><td>Общее число операторов в программе</td><td>N1</td><td id="m_N1" class="metric-val">0</td></tr>
-      <tr><td>4</td><td>Общее число операндов в программе</td><td>N2</td><td id="m_N2" class="metric-val">0</td></tr>
-      </tbody>
-    </table>
-
-    <h2>3 Расширенные метрики Холстеда</h2>
-    <table>
-      <thead>
-      <tr><th>№</th><th>Расширенная метрика</th><th>Формула</th><th>Обозначение</th><th>Значение</th></tr>
-      </thead>
-      <tbody>
-      <tr><td>1</td><td>Словарь программы</td><td>η1 + η2</td><td>η</td><td id="m_eta" class="metric-val">0</td></tr>
-      <tr><td>2</td><td>Длина программы</td><td>N1 + N2</td><td>N</td><td id="m_N" class="metric-val">0</td></tr>
-      <tr><td>3</td><td>Объем программы</td><td>N * log2(η)</td><td>V</td><td><span id="m_V" class="metric-val">0</span></td></tr>
-      </tbody>
-    </table>
-  </div>
 </div>
 
 <script>
-  function analyzeCode() {
-    let code = document.getElementById("codeArea").value;
+    function analyzeCode() {
+        let code = document.getElementById("codeArea").value;
 
-    // 1. Очистка от строк и комментариев
-    let stringConstants = [];
-    code = code.replace(/"([^"\\]|\\.)*"/g, function(match) {
-      stringConstants.push(match);
-      return ` __STR_CONST_${stringConstants.length - 1}__ `;
-    });
-    code = code.replace(/\/\/.*/g, '');
-    code = code.replace(/\/\*[\s\S]*?\*\//g, '');
+        let stringConstants = [];
+        code = code.replace(/"([^"\\]|\\.)*"/g, function(match) {
+            stringConstants.push(match);
+            return ` __STR_CONST_${stringConstants.length - 1}__ `;
+        });
+        code = code.replace(/\/\/.*/g, '');
+        code = code.replace(/\/\*[\s\S]*?\*\//g, '');
 
-    const keywordsOps = [
-      "if", "else", "while", "for", "return", "val", "var", "fun", "class",
-      "break", "continue", "in", "is", "println", "print", "mutableMapOf",
-      "mutableListOf", "getOrDefault"
-    ];
+        const keywordsOps = [
+            "if", "else", "while", "for", "return", "val", "var", "fun", "class",
+            "break", "continue", "in", "is", "println", "print", "mutableMapOf",
+            "mutableListOf", "getOrDefault"
+        ];
 
-    const symbolOps = [
-      "==", "!=", "<=", ">=", "+=", "-=", "*=", "/=", "&&", "||", "->",
-      "+", "-", "*", "/", "%", "=", "<", ">", "!", ";", ".", ",", ":"
-    ];
+        const symbolOps = [
+            "==", "!=", "<=", ">=", "+=", "-=", "*=", "/=", "&&", "||", "->",
+            "+", "-", "*", "/", "%", "=", "<", ">", "!", ";", ".", ",", ":"
+        ];
 
-    let operatorsMap = {};
-    let operandsMap = {};
+        let operatorsMap = {};
+        let operandsMap = {};
 
-    // 2. Подсчет скобок ( ) ТОЛЬКО в математических выражениях
-    // Ищем скобки, перед которыми НЕТ имени функции или ключевого слова,
-    // и внутри которых находятся математические операторы (+, -, *, /, %)
-    let mathBracketsCount = 0;
-    const mathParenRegex = /(?:^|[^a-zA-Z0-9_])\(\s*([a-zA-Z0-9_.\s]+[\+\-\*\/\%][a-zA-Z0-9_.\s\+\-\*\/\%]*)\)/g;
+        let roundBrackets = 0;
+        let roundBracketMatches = code.match(/(?<!\bif\s)(?<!\bwhile\s)(?<!\bfor\s)\((?=[^()\n]*[+\-*/%=<>!&|,])[^()\n]*\)/g);
+        if (roundBracketMatches) {
+            roundBrackets = roundBracketMatches.length;
+        }
+        if (roundBrackets > 0) operatorsMap["( )"] = roundBrackets;
 
-    let match;
-    while ((match = mathParenRegex.exec(code)) !== null) {
-      mathBracketsCount++;
+        let curlyBrackets = (code.match(/\{/g) || []).length;
+        if (curlyBrackets > 0) operatorsMap["{ }"] = curlyBrackets;
+
+        let squareBrackets = (code.match(/\[/g) || []).length;
+        if (squareBrackets > 0) operatorsMap["[ ]"] = squareBrackets;
+
+        code = code.replace(/[\(\)\{\}\[\]]/g, ' ');
+
+        for (let op of symbolOps) {
+            let escapedOp = op.replace(/([.*+?^${}()|[\]\\])/g, '\\$1');
+            let regex = new RegExp(escapedOp, 'g');
+            let matches = code.match(regex);
+            if (matches) {
+                operatorsMap[op] = (operatorsMap[op] || 0) + matches.length;
+                code = code.replace(regex, ' ');
+            }
+        }
+
+        let tokens = code.split(/\s+/).filter(t => t.length > 0);
+
+        for (let token of tokens) {
+            if (token.startsWith("__STR_CONST_")) {
+                let idx = parseInt(token.replace("__STR_CONST_", "").replace("__", ""));
+                let strValue = stringConstants[idx];
+                operandsMap[strValue] = (operandsMap[strValue] || 0) + 1;
+                continue;
+            }
+
+            if (keywordsOps.includes(token)) {
+                operatorsMap[token] = (operatorsMap[token] || 0) + 1;
+            } else {
+                operandsMap[token] = (operandsMap[token] || 0) + 1;
+            }
+        }
+
+        let opsTableBody = document.querySelectorAll("#operatorsTable tbody")[0];
+        opsTableBody.innerHTML = "";
+        let eta1 = 0, N1 = 0;
+        let j = 1;
+        for (let op in operatorsMap) {
+            let count = operatorsMap[op];
+            eta1++;
+            N1 += count;
+            opsTableBody.innerHTML += `<tr><td>${j++}</td><td><code>${escapeHtml(op)}</code></td><td>${count}</td></tr>`;
+        }
+
+        let operandsTableBody = document.querySelectorAll("#operandsTable tbody")[0];
+        operandsTableBody.innerHTML = "";
+        let eta2 = 0, N2 = 0;
+        let i = 1;
+        for (let opd in operandsMap) {
+            let count = operandsMap[opd];
+            eta2++;
+            N2 += count;
+            operandsTableBody.innerHTML += `<tr><td>${i++}</td><td><code>${escapeHtml(opd)}</code></td><td>${count}</td></tr>`;
+        }
+
+        document.getElementById("m_eta1").innerText = eta1;
+        document.getElementById("m_eta2").innerText = eta2;
+        document.getElementById("m_N1").innerText = N1;
+        document.getElementById("m_N2").innerText = N2;
+
+        let eta = eta1 + eta2;
+        let N = N1 + N2;
+        let V = eta > 0 ? (N * Math.log2(eta)).toFixed(2) : 0;
+
+        document.getElementById("m_eta").innerText = eta;
+        document.getElementById("m_N").innerText = N;
+        document.getElementById("m_V").innerText = V;
     }
 
-    if (mathBracketsCount > 0) {
-      operatorsMap["( )"] = mathBracketsCount;
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
-
-    // Другие скобки
-    let curlyBrackets = (code.match(/\{/g) || []).length;
-    if (curlyBrackets > 0) operatorsMap["{ }"] = curlyBrackets;
-
-    let squareBrackets = (code.match(/\[/g) \vert{}\vert{} []).length;     if (squareBrackets > 0) operatorsMap["[ ]"] = squareBrackets;      // Удаляем все скобки из кода перед поиском остальных символов и токенов     code = code.replace(/[\(\)\{\}\[\]]/g, ' ');
-
-    // 3. Поиск составных и символьных операторов
-    for (let op of symbolOps) {
-      let escapedOp = op.replace(/([.*+?^${}()|[\]\\])/g, '\\$1');
-      let regex = new RegExp(escapedOp, 'g');
-      let matches = code.match(regex);
-      if (matches) {
-        operatorsMap[op] = (operatorsMap[op] || 0) + matches.length;
-        code = code.replace(regex, ' ');
-      }
-    }
-
-    // 4. Анализ остальных токенов (ключевые слова / операнды)
-    let tokens = code.split(/\s+/).filter(t => t.length > 0);
-
-    for (let token of tokens) {
-      if (token.startsWith("__STR_CONST_")) {
-        let idx = parseInt(token.replace("__STR_CONST_", "").replace("__", ""));
-        let strValue = stringConstants[idx];
-        operandsMap[strValue] = (operandsMap[strValue] || 0) + 1;
-        continue;
-      }
-
-      if (keywordsOps.includes(token)) {
-        operatorsMap[token] = (operatorsMap[token] || 0) + 1;
-      } else {
-        operandsMap[token] = (operandsMap[token] || 0) + 1;
-      }
-    }
-
-    // 5. Отрисовка таблиц и подсчет метрик
-    let opsTableBody = document.querySelectorAll("#operatorsTable tbody")[0];
-    opsTableBody.innerHTML = "";
-    let eta1 = 0, N1 = 0;
-    let j = 1;
-    for (let op in operatorsMap) {
-      let count = operatorsMap[op];
-      eta1++;
-      N1 += count;
-      opsTableBody.innerHTML += `<tr><td>${j++}</td><td><code>${escapeHtml(op)}</code></td><td>${count}</td></tr>`;
-    }
-
-    let operandsTableBody = document.querySelectorAll("#operandsTable tbody")[0];
-    operandsTableBody.innerHTML = "";
-    let eta2 = 0, N2 = 0;
-    let i = 1;
-    for (let opd in operandsMap) {
-      let count = operandsMap[opd];
-      eta2++;
-      N2 += count;
-      operandsTableBody.innerHTML += `<tr><td>${i++}</td><td><code>${escapeHtml(opd)}</code></td><td>${count}</td></tr>`;
-    }
-
-    document.getElementById("m_eta1").innerText = eta1;
-    document.getElementById("m_eta2").innerText = eta2;
-    document.getElementById("m_N1").innerText = N1;
-    document.getElementById("m_N2").innerText = N2;
-
-    let eta = eta1 + eta2;
-    let N = N1 + N2;
-    let V = eta > 0 ? (N * Math.log2(eta)).toFixed(2) : 0;
-
-    document.getElementById("m_eta").innerText = eta;
-    document.getElementById("m_N").innerText = N;
-    document.getElementById("m_V").innerText = V;
-  }
-
-  function escapeHtml(text) {
-    return text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
 </script>
 </body>
 </html>
