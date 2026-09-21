@@ -156,6 +156,7 @@
   function analyzeCode() {
     let code = document.getElementById("codeArea").value;
 
+    // 1. Очистка от строк и комментариев
     let stringConstants = [];
     code = code.replace(/"([^"\\]|\\.)*"/g, function(match) {
       stringConstants.push(match);
@@ -178,17 +179,28 @@
     let operatorsMap = {};
     let operandsMap = {};
 
-    let roundBrackets = (code.match(/\(/g) || []).length;
-    if (roundBrackets > 0) operatorsMap["( )"] = roundBrackets;
+    // 2. Подсчет скобок ( ) ТОЛЬКО в математических выражениях
+    // Ищем скобки, перед которыми НЕТ имени функции или ключевого слова,
+    // и внутри которых находятся математические операторы (+, -, *, /, %)
+    let mathBracketsCount = 0;
+    const mathParenRegex = /(?:^|[^a-zA-Z0-9_])\(\s*([a-zA-Z0-9_.\s]+[\+\-\*\/\%][a-zA-Z0-9_.\s\+\-\*\/\%]*)\)/g;
 
+    let match;
+    while ((match = mathParenRegex.exec(code)) !== null) {
+      mathBracketsCount++;
+    }
+
+    if (mathBracketsCount > 0) {
+      operatorsMap["( )"] = mathBracketsCount;
+    }
+
+    // Другие скобки
     let curlyBrackets = (code.match(/\{/g) || []).length;
     if (curlyBrackets > 0) operatorsMap["{ }"] = curlyBrackets;
 
-    let squareBrackets = (code.match(/\[/g) || []).length;
-    if (squareBrackets > 0) operatorsMap["[ ]"] = squareBrackets;
+    let squareBrackets = (code.match(/\[/g) \vert{}\vert{} []).length;     if (squareBrackets > 0) operatorsMap["[ ]"] = squareBrackets;      // Удаляем все скобки из кода перед поиском остальных символов и токенов     code = code.replace(/[\(\)\{\}\[\]]/g, ' ');
 
-    code = code.replace(/[\(\)\{\}\[\]]/g, ' ');
-
+    // 3. Поиск составных и символьных операторов
     for (let op of symbolOps) {
       let escapedOp = op.replace(/([.*+?^${}()|[\]\\])/g, '\\$1');
       let regex = new RegExp(escapedOp, 'g');
@@ -199,6 +211,7 @@
       }
     }
 
+    // 4. Анализ остальных токенов (ключевые слова / операнды)
     let tokens = code.split(/\s+/).filter(t => t.length > 0);
 
     for (let token of tokens) {
@@ -216,6 +229,7 @@
       }
     }
 
+    // 5. Отрисовка таблиц и подсчет метрик
     let opsTableBody = document.querySelectorAll("#operatorsTable tbody")[0];
     opsTableBody.innerHTML = "";
     let eta1 = 0, N1 = 0;
